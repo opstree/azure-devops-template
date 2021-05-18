@@ -1,13 +1,4 @@
 ---
-
-trigger: 
-  - master
-
-pr:
-  branches:
-    include:
-    - master
-
 variables:
   - group: RuntimeVariables
 
