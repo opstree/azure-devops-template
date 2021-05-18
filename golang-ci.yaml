@@ -225,7 +225,7 @@ stages:
             main
           displayName: "Execute trivy scan"
           env:
-            IMAGE_PATH: $(System.ArtifactsDirectory)/drop/k${{ parameters.ApplicationName }}.tar
+            IMAGE_PATH: $(System.ArtifactsDirectory)/drop/${{ parameters.ApplicationName }}.tar
 
 - stage: release_binaries
   dependsOn: ["code_security"]
