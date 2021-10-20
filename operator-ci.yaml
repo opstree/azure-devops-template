@@ -134,6 +134,8 @@ stages:
   jobs:
     - job: linux_amd64
       dependsOn: []
+      pool:
+        vmImage: "ubuntu-18.04"
       steps:
       - task: Docker@2
         displayName: "Building docker image"
@@ -156,6 +158,8 @@ stages:
   dependsOn: ["build", "build_image"]
   jobs:
     - job: linux_amd64
+      pool:
+        vmImage: "ubuntu-18.04"
       dependsOn: []
       pool:
         vmImage: "ubuntu-18.04"
@@ -173,6 +177,8 @@ stages:
   dependsOn: ["generate_manifests"]
   jobs:
     - job: gosec
+      pool:
+        vmImage: "ubuntu-18.04"
       dependsOn: []
       steps:
         - script: |
@@ -201,6 +207,8 @@ stages:
   dependsOn: ["generate_manifests"]
   jobs:
     - job: trivy_scan
+      pool:
+        vmImage: "ubuntu-18.04"
       dependsOn: []
       steps:
         - task: DownloadBuildArtifacts@0
