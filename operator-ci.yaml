@@ -161,8 +161,6 @@ stages:
       pool:
         vmImage: "ubuntu-18.04"
       dependsOn: []
-      pool:
-        vmImage: "ubuntu-18.04"
       steps:
         - task: GoTool@0
           displayName: "Installing Golang"
