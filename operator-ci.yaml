@@ -256,6 +256,26 @@ stages:
               latest
               $(Build.SourceBranchName)
               ${{ parameters.AppVersion }}
+        - task: Docker@2
+          inputs:
+            containerRegistry: 'QuayServiceConnection'
+            repository: '${{ parameters.QuayImageName }}'
+            command: 'build'
+            Dockerfile: '**/Dockerfile'
+            arguments: 'ARCH=arm64'
+            tags: |
+              latest-arm64
+              $(Build.SourceBranchName)-arm64
+              ${{ parameters.AppVersion }}-arm64
+        - task: Docker@2
+          inputs:
+            containerRegistry: 'QuayServiceConnection'
+            repository: '${{ parameters.QuayImageName }}'
+            command: 'push'
+            tags: |
+              latest-arm64
+              $(Build.SourceBranchName)-arm64
+              ${{ parameters.AppVersion }}-arm64
       condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/master'))
 
 - stage: release_github_image
@@ -277,6 +297,26 @@ stages:
               latest
               $(Build.SourceBranchName)
               ${{ parameters.AppVersion }}
+        - task: Docker@2
+          inputs:
+            containerRegistry: 'GithubServiceConnection'
+            repository: '${{ parameters.GithubImageName }}'
+            command: 'build'
+            Dockerfile: '**/Dockerfile'
+            arguments: 'ARCH=arm64'
+            tags: |
+              latest-arm64
+              $(Build.SourceBranchName)-arm64
+              ${{ parameters.AppVersion }}-arm64
+        - task: Docker@2
+          inputs:
+            containerRegistry: 'GithubServiceConnection'
+            repository: '${{ parameters.GithubImageName }}'
+            command: 'push'
+            tags: |
+              latest-arm64
+              $(Build.SourceBranchName)-arm64
+              ${{ parameters.AppVersion }}-arm64
       condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/master'))
 
 - stage: docs
