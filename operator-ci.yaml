@@ -121,7 +121,7 @@ stages:
             rootFolderOrFile: '$(Agent.BuildDirectory)/${{ parameters.ApplicationName }}'
             includeRootFolder: true
             archiveType: 'zip'
-            archiveFile: '$(Build.ArtifactStagingDirectory)/compiled/${{ parameters.ApplicationName }}-linux-amd64.zip'
+            archiveFile: '$(Build.ArtifactStagingDirectory)/compiled/amd64/${{ parameters.ApplicationName }}-linux-amd64.zip'
             replaceExistingArchive: true
         - task: PublishBuildArtifacts@1
           inputs:
@@ -150,7 +150,7 @@ stages:
             rootFolderOrFile: '$(Agent.BuildDirectory)/${{ parameters.ApplicationName }}'
             includeRootFolder: true
             archiveType: 'zip'
-            archiveFile: '$(Build.ArtifactStagingDirectory)/compiled/${{ parameters.ApplicationName }}-linux-arm64.zip'
+            archiveFile: '$(Build.ArtifactStagingDirectory)/compiled/arm64/${{ parameters.ApplicationName }}-linux-arm64.zip'
             replaceExistingArchive: true
         - task: PublishBuildArtifacts@1
           inputs:
