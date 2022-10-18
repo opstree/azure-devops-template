@@ -125,9 +125,39 @@ stages:
             replaceExistingArchive: true
         - task: PublishBuildArtifacts@1
           inputs:
-            PathtoPublish: '$(Build.ArtifactStagingDirectory)/compiled'
+            PathtoPublish: '$(Build.ArtifactStagingDirectory)/compiled/amd64'
             ArtifactName: 'drop'
             publishLocation: 'Container'
+    - job: linux_arm64
+      dependsOn: []
+      pool:
+        vmImage: "ubuntu-18.04"
+      steps:
+        - task: GoTool@0
+          displayName: "Installing Golang"
+          inputs:
+            version: '${{ parameters.GolangVersion }}'
+        - task: Go@0
+          displayName: "Executing go build"
+          inputs:
+            command: 'build'
+            arguments: '-o $(Agent.BuildDirectory)/${{ parameters.ApplicationName }}'
+          env:
+            GOARCH: arm64
+        - task: ArchiveFiles@2
+          displayName: 'Archiving go binary'
+          inputs:
+            rootFolderOrFile: '$(Agent.BuildDirectory)/${{ parameters.ApplicationName }}'
+            includeRootFolder: true
+            archiveType: 'zip'
+            archiveFile: '$(Build.ArtifactStagingDirectory)/compiled/${{ parameters.ApplicationName }}-linux-arm64.zip'
+            replaceExistingArchive: true
+        - task: PublishBuildArtifacts@1
+          inputs:
+            PathtoPublish: '$(Build.ArtifactStagingDirectory)/compiled/arm64'
+            ArtifactName: 'drop'
+            publishLocation: 'Container'
+
 
 - stage: build_image
   dependsOn: ["container_quality"]
@@ -146,13 +176,35 @@ stages:
           repository: '${{ parameters.ApplicationName }}'
       - script: |
           mkdir -p $(Build.ArtifactStagingDirectory)/image
-          docker save -o $(Build.ArtifactStagingDirectory)/image/${{ parameters.ApplicationName }}.tar ${{ parameters.ApplicationName }}:$(Build.BuildId)
+          docker save -o $(Build.ArtifactStagingDirectory)/image/amd64/${{ parameters.ApplicationName }}.tar ${{ parameters.ApplicationName }}:$(Build.BuildId)
         displayName: "Archiving docker image"
       - task: PublishBuildArtifacts@1
         inputs:
-          PathtoPublish: '$(Build.ArtifactStagingDirectory)/image'
-          ArtifactName: 'dropcontainer'
+          PathtoPublish: '$(Build.ArtifactStagingDirectory)/image/amd64'
+          ArtifactName: 'dropcontainer-amd64'
           publishLocation: 'Container'
+    - job: linux_arm64
+      dependsOn: []
+      pool:
+        vmImage: "ubuntu-18.04"
+      steps:
+        - task: Docker@2
+          displayName: "Building docker image"
+          inputs:
+            command: 'build'
+            Dockerfile: '**/Dockerfile'
+            tags: '$(Build.BuildId)-arm64'
+            arguments: '--build-arg ARCH=arm64'
+            repository: '${{ parameters.ApplicationName }}'
+        - script: |
+            mkdir -p $(Build.ArtifactStagingDirectory)/image
+            docker save -o $(Build.ArtifactStagingDirectory)/image/arm64/${{ parameters.ApplicationName }}.tar ${{ parameters.ApplicationName }}:$(Build.BuildId)-arm64
+          displayName: "Archiving docker image"
+        - task: PublishBuildArtifacts@1
+          inputs:
+            PathtoPublish: '$(Build.ArtifactStagingDirectory)/image/arm64'
+            ArtifactName: 'dropcontainer-arm64'
+            publishLocation: 'Container'
 
 - stage: generate_manifests
   dependsOn: ["build", "build_image"]
@@ -235,7 +287,7 @@ stages:
             main
           displayName: "Execute trivy scan"
           env:
-            IMAGE_PATH: $(System.ArtifactsDirectory)/dropcontainer/${{ parameters.ApplicationName }}.tar
+            IMAGE_PATH: $(System.ArtifactsDirectory)/dropcontainer-amd64/${{ parameters.ApplicationName }}.tar
 
 - stage: release_quay
   dependsOn: ["container_security", "code_security"]
@@ -262,7 +314,7 @@ stages:
             repository: '${{ parameters.QuayImageName }}'
             command: 'build'
             Dockerfile: '**/Dockerfile'
-            arguments: 'ARCH=arm64'
+            arguments: '--build-arg ARCH=arm64'
             tags: |
               latest-arm64
               $(Build.SourceBranchName)-arm64
@@ -303,7 +355,7 @@ stages:
             repository: '${{ parameters.GithubImageName }}'
             command: 'build'
             Dockerfile: '**/Dockerfile'
-            arguments: 'ARCH=arm64'
+            arguments: '--build-arg ARCH=arm64'
             tags: |
               latest-arm64
               $(Build.SourceBranchName)-arm64
