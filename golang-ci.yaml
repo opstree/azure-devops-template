@@ -25,7 +25,7 @@ stages:
     - job: gofmt
       dependsOn: []
       pool:
-        vmImage: "ubuntu-18.04"
+        vmImage: "ubuntu-20.04"
       steps:
         - task: GoTool@0
           displayName: "Installing Golang"
@@ -46,7 +46,7 @@ stages:
     - job: govet
       dependsOn: []
       pool:
-        vmImage: "ubuntu-18.04"
+        vmImage: "ubuntu-20.04"
       steps:
         - task: GoTool@0
           displayName: "Installing Golang"
@@ -64,7 +64,7 @@ stages:
     - job: golang_ci_lint
       dependsOn: []
       pool:
-        vmImage: "ubuntu-18.04"
+        vmImage: "ubuntu-20.04"
       steps:
         - task: GoTool@0
           displayName: "Installing Golang"
@@ -81,7 +81,7 @@ stages:
     - job: dockerfile_lint
       dependsOn: []
       pool:
-        vmImage: "ubuntu-18.04"
+        vmImage: "ubuntu-20.04"
       steps:
         - script: |
             #!/bin/bash
@@ -109,7 +109,7 @@ stages:
     - job: linux_amd64
       dependsOn: []
       pool:
-        vmImage: "ubuntu-18.04"
+        vmImage: "ubuntu-20.04"
       steps:
         - task: GoTool@0
           displayName: "Installing Golang"
@@ -233,7 +233,7 @@ stages:
     - job: goreleaser
       dependsOn: []  
       pool:
-        vmImage: "ubuntu-18.04"
+        vmImage: "ubuntu-20.04"
       steps:
         - script: |
             #!/bin/bash
@@ -273,7 +273,7 @@ stages:
     - job: quay
       dependsOn: []  
       pool:
-        vmImage: "ubuntu-18.04"
+        vmImage: "ubuntu-20.04"
       steps:
         - task: Docker@2
           displayName: "Publish quay image"
@@ -293,7 +293,7 @@ stages:
     - job: github
       dependsOn: []  
       pool:
-        vmImage: "ubuntu-18.04"
+        vmImage: "ubuntu-20.04"
       steps:
         - task: Docker@2
           displayName: "Publish github image"
@@ -313,7 +313,7 @@ stages:
     - job: verfiy
       dependsOn: []  
       pool:
-        vmImage: "ubuntu-18.04"
+        vmImage: "ubuntu-20.04"
       steps:
         - task: DownloadBuildArtifacts@0
           displayName: "Downloading the artifact"
@@ -339,7 +339,7 @@ stages:
     - job: build
       dependsOn: []  
       pool:
-        vmImage: "ubuntu-18.04"
+        vmImage: "ubuntu-20.04"
       steps:
         - task: NodeTool@0
           displayName: "Installing NodeJS"
