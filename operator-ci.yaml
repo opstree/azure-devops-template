@@ -25,7 +25,7 @@ stages:
       - job: gofmt
         dependsOn: []
         pool:
-          vmImage: "ubuntu-18.04"
+          vmImage: "ubuntu-20.04"
         steps:
           - task: GoTool@0
             displayName: "Installing Golang"
@@ -45,7 +45,7 @@ stages:
       - job: govet
         dependsOn: []
         pool:
-          vmImage: "ubuntu-18.04"
+          vmImage: "ubuntu-20.04"
         steps:
           - task: GoTool@0
             displayName: "Installing Golang"
@@ -63,7 +63,7 @@ stages:
       - job: golang_ci_lint
         dependsOn: []
         pool:
-          vmImage: "ubuntu-18.04"
+          vmImage: "ubuntu-20.04"
         steps:
           - task: GoTool@0
             displayName: "Installing Golang"
@@ -80,12 +80,12 @@ stages:
       - job: dockerfile_lint
         dependsOn: []
         pool:
-          vmImage: "ubuntu-18.04"
+          vmImage: "ubuntu-20.04"
         steps:
           - script: |
               #!/bin/bash
               download_hadolint() {
-                  wget https://github.com/hadolint/hadolint/releases/download/v2.4.0/hadolint-Linux-x86_64
+                  wget https://github.com/hadolint/hadolint/releases/download/v2.12.0/hadolint-Linux-x86_64
                   chmod +x hadolint-Linux-x86_64
               }
               execute_hadolint() {
@@ -104,7 +104,7 @@ stages:
       - job: linux_amd64
         dependsOn: []
         pool:
-          vmImage: "ubuntu-18.04"
+          vmImage: "ubuntu-20.04"
         steps:
           - task: GoTool@0
             displayName: "Installing Golang"
@@ -131,7 +131,7 @@ stages:
       - job: linux_arm64
         dependsOn: []
         pool:
-          vmImage: "ubuntu-18.04"
+          vmImage: "ubuntu-20.04"
         steps:
           - task: GoTool@0
             displayName: "Installing Golang"
@@ -165,7 +165,7 @@ stages:
       - job: linux_amd64
         dependsOn: []
         pool:
-          vmImage: "ubuntu-18.04"
+          vmImage: "ubuntu-20.04"
         steps:
           - task: Docker@2
             displayName: "Building docker image"
@@ -186,7 +186,7 @@ stages:
       - job: linux_arm64
         dependsOn: []
         pool:
-          vmImage: "ubuntu-18.04"
+          vmImage: "ubuntu-20.04"
         steps:
           - task: Docker@2
             displayName: "Building docker image"
@@ -211,7 +211,7 @@ stages:
     jobs:
       - job: linux_amd64
         pool:
-          vmImage: "ubuntu-18.04"
+          vmImage: "ubuntu-20.04"
         dependsOn: []
         steps:
           - task: GoTool@0
@@ -228,7 +228,7 @@ stages:
     jobs:
       - job: gosec
         pool:
-          vmImage: "ubuntu-18.04"
+          vmImage: "ubuntu-20.04"
         dependsOn: []
         steps:
           - script: |
@@ -258,7 +258,7 @@ stages:
     jobs:
       - job: trivy_scan
         pool:
-          vmImage: "ubuntu-18.04"
+          vmImage: "ubuntu-20.04"
         dependsOn: []
         steps:
           - task: DownloadBuildArtifacts@0
@@ -304,7 +304,7 @@ stages:
       - job: quay
         dependsOn: []
         pool:
-          vmImage: "ubuntu-18.04"
+          vmImage: "ubuntu-20.04"
         steps:
           - task: Docker@2
             displayName: "Publish quay image"
@@ -345,7 +345,7 @@ stages:
       - job: github
         dependsOn: []
         pool:
-          vmImage: "ubuntu-18.04"
+          vmImage: "ubuntu-20.04"
         steps:
           - task: Docker@2
             displayName: "Publish github image"
@@ -386,7 +386,7 @@ stages:
       - job: build
         dependsOn: []
         pool:
-          vmImage: "ubuntu-18.04"
+          vmImage: "ubuntu-20.04"
         steps:
           - task: NodeTool@0
             displayName: "Installing NodeJS"
